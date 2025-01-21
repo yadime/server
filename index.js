@@ -80,7 +80,6 @@ const coursesRoutes = require('./routes/courses');
 const instructorRoutes = require('./routes/instructor');
 const paymentRoutes = require('./routes/payment');
 const imageRoutes = require('./routes/imageRoutes');
-const forgotPassword = require('../server/services/forgotPassword');
 const advising = require('./routes/advising')
 
 
