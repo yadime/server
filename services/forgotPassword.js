@@ -3,7 +3,7 @@ const router = express.Router();
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const db = require('../config/db'); 
+
 
 // Endpoint to send reset link
 router.post('/forgot-password', async (req, res) => {

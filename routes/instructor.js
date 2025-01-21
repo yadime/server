@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/db');
+
 const router = express.Router();
 
 // API Route to Fetch Data from the 'instructor' Table
