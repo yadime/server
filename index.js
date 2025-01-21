@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bcrypt = require('bcrypt'); // For hashing passwords
+const bcryptjs = require('bcryptjs'); // For hashing passwords
 const path = require('path');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
@@ -93,7 +93,7 @@ app.post('/reset-password', async (req, res) => {
 
         const userId = results[0].user_id;
         try {
-            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            const hashedPassword = await bcryptjs.hash(newPassword, 10);
             db.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId], (updateErr) => {
                 if (updateErr) return res.status(500).json({ message: 'Error updating password.' });
                 db.query('DELETE FROM password_reset_tokens WHERE user_id = ?', [userId]);
@@ -119,7 +119,7 @@ app.post('/register', async (req, res) => {
             }
 
             // Hash the password
-            const hashedPassword = await bcrypt.hash(Password, saltRounds);
+            const hashedPassword = await bcryptjs.hash(Password, saltRounds);
             const SQL = 'INSERT INTO users (name, email, username, password, student_type) VALUES (?, ?, ?, ?, ?)';
             const values = [Name, Email, UserName, hashedPassword, StudentType ];
 
@@ -147,7 +147,7 @@ app.post('/login', (req, res) => {
         }
         if (results.length > 0) {
             const user = results[0];
-            const isPasswordMatch = await bcrypt.compare(LoginPassword, user.password);
+            const isPasswordMatch = await bcryptjs.compare(LoginPassword, user.password);
             if (isPasswordMatch) {
                 res.status(200).json({
                     message: 'Login successful!',
