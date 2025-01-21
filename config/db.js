@@ -1,16 +1,16 @@
+require('dotenv').config(); // Load environment variables
 const mysql = require('mysql');
-const fs = require('fs');  // Ensure fs is required
+const fs = require('fs');
 
 // Create MySQL connection with SSL
 const db = mysql.createConnection({
-    user: '2jipex2gt3Jj5gd.root',
-    host: 'gateway01.us-west-2.prod.aws.tidbcloud.com',
-    password: 'cFoVU1esEcObfWsh',
-    database: 'studentdb',
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     ssl: {
-        // Use the correct absolute path to your PEM certificates
-        ca: fs.readFileSync('cert/isrgrootx1.pem'),  // Path to the CA certificate
-        rejectUnauthorized: true // Ensure SSL connection is validated
+        ca: fs.readFileSync(process.env.DB_SSL_CA_PATH), // Path to the CA certificate
+        rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' // Ensure SSL connection is validated
     }
 });
 

@@ -10,7 +10,8 @@ const ImageKit = require('imagekit');
 const multer = require('multer');
 
 // Database connection
-const db = require('../server/config/db');
+const db = require('../server/config/db'); // Ensure this path matches your file structure.
+
 
 // Imported Routes
 const enrollmentRoutes = require('./routes/enrollment');
