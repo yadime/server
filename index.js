@@ -95,7 +95,7 @@ app.use('/courses', coursesRoutes);
 app.use('/instructor', instructorRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/upload-images', imageRoutes);
-app.use('/forgot-password', forgotPassword);
+app.use('/forgot-password');
 app.use('/advising', advising);
 
 
