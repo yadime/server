@@ -2,6 +2,22 @@ require('dotenv').config(); // Load environment variables
 const mysql = require('mysql');
 const fs = require('fs');
 
+// Check if the certificate file exists and log the path
+const sslCaPath = process.env.DB_SSL_CA_PATH;
+if (!fs.existsSync(sslCaPath)) {
+    console.error(`Certificate file not found at: ${sslCaPath}`);
+} else {
+    console.log(`Loading certificate from: ${sslCaPath}`);
+    try {
+        // Read and log the certificate contents to ensure it's loaded
+        const sslCaContent = fs.readFileSync(sslCaPath, 'utf8');
+        console.log('Certificate contents loaded successfully:');
+        console.log(sslCaContent.substring(0, 200)); // Display the first 200 characters for security reasons
+    } catch (err) {
+        console.error('Error reading certificate file:', err);
+    }
+}
+
 // Create MySQL connection with SSL
 const db = mysql.createConnection({
     user: process.env.DB_USER,
@@ -9,7 +25,7 @@ const db = mysql.createConnection({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     ssl: {
-        ca: fs.readFileSync(process.env.DB_SSL_CA_PATH), // Path to the CA certificate
+        ca: fs.existsSync(sslCaPath) ? fs.readFileSync(sslCaPath) : null, // Path to the CA certificate
         rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' // Ensure SSL connection is validated
     }
 });
